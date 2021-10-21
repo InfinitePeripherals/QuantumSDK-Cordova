@@ -1,0 +1,6 @@
+framework module QuantumSDK {
+  umbrella header "QuantumSDK.h"
+
+  export *
+  module * { export * }
+}

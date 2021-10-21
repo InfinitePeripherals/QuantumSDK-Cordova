@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-quantumsdk" version="1.0.15" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>QuantumSDKCordova</name>
+    <js-module name="QuantumSDKCordova" src="www/QuantumSDKCordova.js">
+        <clobbers target="Quantum" />
+    </js-module>
+    
+    <!--<hook type="after_platform_add" src="hooks/add_embedded.js" />-->
+    
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="QuantumSDKCordova">
+                <param name="ios-package" value="QuantumSDKCordova" />
+            </feature>
+        </config-file>
+        <config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
+            <array>
+                <string>com.datecs.linea.pro.msr</string>
+                <string>com.datecs.iserial.communication</string>
+                <string>com.datecs.pinpad</string>
+                <string>com.datecs.linea.pro.bar</string>
+                <string>com.datecs.printer.escpos</string>
+            </array>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
+            <string>This app uses bluetooth to connect to IPC scanner and printer devices.
+            </string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
+            <string>This app uses location to determine whether the enterpise device is being used in a restricted geographic.
+            </string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+            <string>This app uses location to determine whether the enterpise device is being used in a restricted geographic.
+            </string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+            <string>This app uses location to determine whether the enterpise device is being used in a restricted geographic.
+            </string>
+        </config-file>
+        
+        <!--Source files-->
+        <source-file src="src/ios/QuantumSDKCordova.m" />
+        
+        <!--System framework-->
+        <framework src="ExternalAccessory.framework" />
+        <framework src="AudioToolbox.framework" />
+        <framework src="MediaPlayer.framework" />
+        <framework src="CoreLocation.framework" />
+        <framework src="WebKit.framework" />
+
+        <!--QuantumSDK framework-->
+        <source-file src="src/ios/QuantumSDK.xcframework" framework="true" target-dir="lib" />
+        <framework src="src/ios/QuantumSDK.xcframework" embed="true" custom="true"/>
+        
+    </platform>
+</plugin>

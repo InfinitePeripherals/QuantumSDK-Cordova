@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-quantumsdk",
+  "version": "1.0.1",
+  "description": "QuantumSDK Cordova plugin",
+  "cordova": {
+    "id": "cordova-plugin-quantumsdk",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InfinitePeripherals/QuantumSDK-Cordova.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "Infinite Peripherals",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/InfinitePeripherals/QuantumSDK-Cordova/issues"
+  },
+  "homepage": "https://github.com/InfinitePeripherals/QuantumSDK-Cordova#readme"
+}
