@@ -148,7 +148,7 @@ exports.connectionState = function (state) {
 };
 
 /**
- * Called when an wireless card is in the field. Should power off after successful read.
+ * Called when a wireless card is in the field. Should power off after successful read.
  * @param {int} cardIndex
  * @param {key-value} cardInfo
  */

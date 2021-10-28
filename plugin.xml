@@ -23,19 +23,23 @@
             </array>
         </config-file>
         <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
-            <string>This app uses bluetooth to connect to IPC scanner and printer devices.
+            <string>This app uses bluetooth to connect to Infinite Peripherals' scanner and printer devices.
+            </string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSBluetoothAlwaysUsageDescription">
+            <string>This app uses bluetooth to connect to Infinite Peripherals' scanner and printer devices.
             </string>
         </config-file>
         <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
-            <string>This app uses location to determine whether the enterpise device is being used in a restricted geographic.
+            <string>This app uses location to determine whether the device is being used in a restricted geographic.
             </string>
         </config-file>
         <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
-            <string>This app uses location to determine whether the enterpise device is being used in a restricted geographic.
+            <string>This app uses location to determine whether the device is being used in a restricted geographic.
             </string>
         </config-file>
         <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-            <string>This app uses location to determine whether the enterpise device is being used in a restricted geographic.
+            <string>This app uses location to determine whether the device is being used in a restricted geographic.
             </string>
         </config-file>
         
@@ -50,7 +54,7 @@
         <framework src="WebKit.framework" />
 
         <!--QuantumSDK framework-->
-        <source-file src="src/ios/QuantumSDK.xcframework" framework="true" target-dir="lib" />
+        <!--<source-file src="src/ios/QuantumSDK.xcframework" framework="true" target-dir="lib" />-->
         <framework src="src/ios/QuantumSDK.xcframework" embed="true" custom="true"/>
         
     </platform>
