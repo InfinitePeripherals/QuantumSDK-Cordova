@@ -1,7 +1,7 @@
 # QuantumSDK-Cordova
 
-## Prerequisites:
-* Download QuantumSDK.framework from IPC's developer portal https://developer.ipcmobile.com
+## Requirements:
+* Download QuantumSDK.xcframework from Infinite Peripherals's developer portal https://developer.ipcmobile.com
 
 ## New Cordova app:
 1. Create new app from command line: <br>
@@ -27,5 +27,5 @@ $ cordova plugin add <path to QuantumSDK-Cordova on local machine>
 ## Usage:
 1. Important: request a developer key from IPC's developer portal https://developer.ipcmobile.com
 2. In the app set the developer key BEFORE calling any other functions `QuantumIQ.setDeveloperKey("your_key");`
-3. Check out QuantumSDKCordova.js for available functions.
+3. Take a look at QuantumSDKCordova.js for available functions.
 4. Make sure to add `Quantum.` in front of any functions you call from QuantumSDKCordova.js 
