@@ -4,14 +4,16 @@
 * Download QuantumSDK.framework from IPC's developer portal https://developer.ipcmobile.com
 
 ## New Cordova app:
-1. Create new app from command line: 
+1. Create new app from command line: <br>
 `$ cordova create hello com.example.hello HelloWorld`
 
-2. Add iOS platform 
-`$ cd hello
- $ cordova platform add ios`
+2. Add iOS platform <br>
+```
+$ cd hello
+$ cordova platform add ios
+```
 
-3. Add QuantumSDKCordova plugin
+3. Add QuantumSDKCordova plugin <br>
 `$ cordova plugin add <path to QuantumSDK-Cordova on local machine>`
 
 4. Copy QuantumSDK.framework to src/ios/ of the plugin
