@@ -23,6 +23,9 @@ $ cordova plugin add <path to QuantumSDK-Cordova on local machine>
 4. Copy or replace latest QuantumSDK.xcframework to src/ios/ of the plugin
 5. Copy build.json from plugin's root to new app's root folder
 6. Build your app.
+```
+$ cordova build
+```
 
 ## Usage:
 1. Important: request a developer key from IPC's developer portal https://developer.ipcmobile.com
