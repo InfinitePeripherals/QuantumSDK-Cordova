@@ -38,7 +38,7 @@ $ cordova build
 ```
 tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a command line tools instance
 ```
--> then run the command below to set your Xcode:
+ -> then run the command below to set your Xcode:
 
 ```
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
