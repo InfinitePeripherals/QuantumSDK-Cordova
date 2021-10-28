@@ -5,7 +5,9 @@
 
 ## New Cordova app:
 1. Create new app from command line: <br>
-`$ cordova create hello com.example.hello HelloWorld`
+```
+$ cordova create hello com.example.hello HelloWorld
+```
 
 2. Add iOS platform <br>
 ```
@@ -14,7 +16,9 @@ $ cordova platform add ios
 ```
 
 3. Add QuantumSDKCordova plugin <br>
-`$ cordova plugin add <path to QuantumSDK-Cordova on local machine>`
+```
+$ cordova plugin add <path to QuantumSDK-Cordova on local machine>
+```
 
 4. Copy QuantumSDK.framework to src/ios/ of the plugin
 5. Copy build.json from plugin's root to new app's root folder
