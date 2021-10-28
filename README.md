@@ -45,15 +45,15 @@ tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Devel
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 ```
 <br>
+
 * If you get Signing error:
 ```
-
 error: Signing for "QuantumCordova" requires a development team. Select a development team in the Signing & Capabilities editor. (in target 'QuantumCordova' from project 'QuantumCordova')
 ** ARCHIVE FAILED **
 
 xcodebuild: Command failed with exit code 65
-
 ```
+
 -> You have 3 options:
   1. Open Xcode, and set your Team and Profile in Signing & Capabilities.
   2. Use a build.json config to sign every time you run `cordova build` command. Visit [Cordova](https://cordova.apache.org/docs/en/10.x/guide/platforms/ios/) for more info.
