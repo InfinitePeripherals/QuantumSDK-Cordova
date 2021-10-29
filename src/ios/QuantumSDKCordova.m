@@ -42,8 +42,6 @@
 - (void)emsrIsTampered:(CDVInvokedUrlCommand*)command;
 - (void)emsrGetKeyVersion:(CDVInvokedUrlCommand*)command;
 - (void)emsrGetDeviceInfo:(CDVInvokedUrlCommand*)command;
-
-
 - (void)iHUBGetPortsInfo: (CDVInvokedUrlCommand *) command;
 
 
@@ -680,7 +678,8 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)emsrGetKeyVersion:(CDVInvokedUrlCommand*)command{
+- (void)emsrGetKeyVersion:(CDVInvokedUrlCommand*)command
+{
     NSLog(@"Call emsrGetKeyVersion");
     [NSThread sleepForTimeInterval:.2];
     
@@ -701,7 +700,8 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void)emsrGetDeviceInfo:(CDVInvokedUrlCommand *)command{
+- (void)emsrGetDeviceInfo:(CDVInvokedUrlCommand *)command
+{
     NSLog(@"Call emsrGetDeviceInfo");
     
     CDVPluginResult* pluginResult = nil;
@@ -731,7 +731,8 @@
     return [pathURL URLByAppendingPathComponent:@"www/resources"];
 }
 
-- (void)iHUBGetPortsInfo:(CDVInvokedUrlCommand *)command{
+- (void)iHUBGetPortsInfo:(CDVInvokedUrlCommand *)command
+{
     NSLog(@"Call iHUBGetPortsInfo");
     
     CDVPluginResult* pluginResult = nil;
@@ -755,9 +756,6 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-
-
-
 #pragma mark - IPCDeviceDelegate
 - (void)connectionState:(int)state
 {
@@ -770,14 +768,12 @@
     // This send to regular barcodeData as string
     [self callback:@"Quantum.barcodeData(\"%@\", %i)", barcode, type];
     
-    
     //*************
     // Convert to decimal
     const char *barcodes = [barcode UTF8String];
     NSMutableArray *barcodeDecimalArray = [NSMutableArray new];
-    for (int i = 0; i < sizeof(barcodes); i++) {
+    for (int i = 0; i < barcode.length; i++) {
         NSString *string = [NSString stringWithFormat:@"%02d", barcodes[i]];
-        NSLog(@"%@", string);
         [barcodeDecimalArray addObject:string];
     }
     NSString *barcodeDecimalString = [barcodeDecimalArray componentsJoinedByString:@","];
@@ -789,19 +785,7 @@
 - (void)barcodeNSData:(NSData *)barcode type:(int)type
 {
     // Hex data
-    NSString *hexData = [NSString stringWithFormat:@"%@", barcode];
-    hexData = [hexData stringByReplacingOccurrencesOfString:@"<" withString:@""];
-    hexData = [hexData stringByReplacingOccurrencesOfString:@">" withString:@""];
-    hexData = [hexData stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    // Ascii string
-    uint8_t *bytes=(uint8_t *)[barcode bytes];
-    NSMutableString *escapedString = [@"" mutableCopy];
-    for (int x = 0; x < barcode.length;x++)
-    {
-        [escapedString appendFormat:@"\\x%02X", bytes[x] ];
-    }
-    
+    NSString *hexData = [self hexStringFromData:barcode length:(int)barcode.length space:NO];
     [self callback:@"Quantum.barcodeNSData(\"%@\", %i)", hexData, type];
 }
 
@@ -831,18 +815,102 @@
 
 - (void)magneticCardEncryptedData:(int)encryption tracks:(int)tracks data:(NSData *)data track1masked:(NSString *)track1masked track2masked:(NSString *)track2masked track3:(NSString *)track3 source:(int)source
 {
-        // Ascii string
-    uint8_t *bytes=(uint8_t *)[data bytes];
-   // NSMutableString *escapedString = [@"" mutableCopy];
-    NSMutableString *escapedString = [[NSMutableString alloc]init];
-    NSMutableString *hexData = [[NSMutableString alloc] init];
-    for (int x=0; x<data.length;x++)
-    {
-        [hexData appendFormat:@"%02x", (unsigned int)bytes[x]];
-        [escapedString appendFormat:@"\\x%02X", bytes[x] ];
-    }
+    NSString *hexData = [self hexStringFromData:data length:(int)data.length space:NO];
 
-    [self callback:@"Quantum.magneticCardEncryptedData(%i, %i, \"%@\", \"%@\", \"%@\", \"%@\", %i)", encryption, tracks, [NSString stringWithFormat:@"%@", escapedString], track1masked, track2masked, track3, source];
+    [self callback:@"Quantum.magneticCardEncryptedData(%i, %i, \"%@\", \"%@\", \"%@\", \"%@\", %i)", encryption, tracks, hexData, track1masked, track2masked, track3, source];
+    
+    // Passing along to corresponding callback
+    if (encryption == ALG_PPAD_DUKPT_SEPARATE_TRACKS) {
+        if(![self magneticCardPPADDUKPTSeparate:data source:source]) {
+            [self magneticCardData:track1masked track2:track2masked track3:track3 source:source];
+        }
+    }
+    else if (encryption==ALG_EH_IDTECH || encryption==ALG_EH_IDTECH_AES128) {
+        [self magneticCardIDTECH:data encryption:encryption];
+    }
+}
+
+- (BOOL)magneticCardPPADDUKPTSeparate:(NSData *)data source:(int)source
+{
+    const uint8_t *bytes=(uint8_t *)[data bytes];
+
+    int index=0;
+    //first block = KSN ident (0x00)
+    index++;
+    //2 more bytes - length (10)
+    int ksnLen=(bytes[index+0]<<8)|(bytes[index+1]);
+    index+=2;
+    index+=ksnLen;
+    //blocks of data follow for the tracks read
+    NSData *t1Encrypted=nil;
+    NSData *t2Encrypted=nil;
+    NSData *t3Encrypted=nil;
+    NSData *panEncrypted=nil;
+    NSData *tJISEncrypted=nil;
+    while (index<data.length) {
+        //get the block
+        int tid=bytes[index++];
+        int tlen=(bytes[index+0]<<8)|(bytes[index+1]);
+        index+=2;
+        NSData *tdata=[NSData dataWithBytes:&bytes[index] length:tlen];
+        index+=tlen;
+        //assign to the track
+        switch (tid) {
+            case 0x01:
+                t1Encrypted=tdata;
+                break;
+            case 0x02:
+                t2Encrypted=tdata;
+                break;
+            case 0x03:
+                t3Encrypted=tdata;
+                break;
+            case 0x04:
+                panEncrypted=tdata;
+                break;
+            case 0x05:
+                tJISEncrypted=tdata;
+                break;
+        }
+    }
+    
+    NSString *dataHexString = [self hexStringFromData:data length:(int)data.length space:NO];
+    NSString *t1EncryptedHexString = [self hexStringFromData:t1Encrypted length:(int)t1Encrypted.length space:NO];
+    NSString *t2EncryptedHexString = [self hexStringFromData:t2Encrypted length:(int)t2Encrypted.length space:NO];
+    NSString *t3EncryptedHexString = [self hexStringFromData:t3Encrypted length:(int)t3Encrypted.length space:NO];
+    NSString *panEncryptedHexString = [self hexStringFromData:panEncrypted length:(int)panEncrypted.length space:NO];
+    NSString *tJISEncryptedHexString = [self hexStringFromData:tJISEncrypted length:(int)tJISEncrypted.length space:NO];
+    
+    // Callback with all tracks
+    [self callback:@"Quantum.magneticCardPPADDUKPTSeparate(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", %i)", dataHexString, t1EncryptedHexString, t2EncryptedHexString, t3EncryptedHexString, panEncryptedHexString, tJISEncryptedHexString, source];
+
+    return true;
+}
+
+- (void)magneticCardIDTECH:(NSData *)data encryption:(int)encryption
+{
+    //find the tracks, turn to ascii hex the data
+    int index=0;
+    const uint8_t *bytes=(uint8_t *)[data bytes];
+    
+    index++; //card encoding type
+    index++; //track status
+    int t1Len=bytes[index++]; //track 1 unencrypted length
+    int t2Len=bytes[index++]; //track 2 unencrypted length
+    int t3Len=bytes[index++]; //track 3 unencrypted length
+    NSString *t1masked=[[NSString alloc] initWithBytes:&bytes[index] length:t1Len encoding:NSASCIIStringEncoding];
+    index+=t1Len; //track 1 masked
+    NSString *t2masked=[[NSString alloc] initWithBytes:&bytes[index] length:t2Len encoding:NSASCIIStringEncoding];
+    index+=t2Len; //track 2 masked
+    NSString *t3masked=[[NSString alloc] initWithBytes:&bytes[index] length:t3Len encoding:NSASCIIStringEncoding];
+    index+=t3Len; //track 3 masked
+    const uint8_t *encrypted=&bytes[index]; //encrypted
+    size_t encLen=[data length]-index-10-40;
+    
+    NSString *dataHexString = [self hexStringFromData:data length:(int)data.length space:NO];
+    NSString *encryptedHexString = [self hexStringFromBytes:encrypted length:(int)encLen space:NO];
+    
+    [self callback:@"Quantum.magneticCardIDTECH(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", %i)", dataHexString, t1masked, t2masked, t3masked, encryptedHexString, encryption];
 }
 
 - (void)magneticCardReadFailed:(int)source reason:(int)reason
@@ -870,8 +938,44 @@
     [self callback:@"Quantum.firmwareUpdateProgress(%i, %i)", phase, percent];
 }
 
+/** Helpers **/
 
+- (NSString *)hexStringFromBytes:(const uint8_t *)bytes length:(size_t)length space:(BOOL)space
+{
+    if (!bytes) {
+        return @"";
+    }
+    
+    @try {
+        NSMutableString *hexString = [NSMutableString new];
+        for (int x = 0; x < length;x++)
+        {
+            [hexString appendFormat:@"%02X", bytes[x] ];
+            
+            if (space && x < length - 1) {
+                [hexString appendFormat:@" "];
+            }
+        }
+        
+        return hexString;
+    }
+    @catch (NSException *exception) {
+        return @"";
+    }
+}
+
+- (NSString *)hexStringFromData:(NSData *)data length:(int)length space:(BOOL)space
+{
+    if (!data) {
+        return @"";
+    }
+    
+    const uint8_t *bytes = (uint8_t *)[data bytes];
+    
+    return [self hexStringFromBytes:bytes length:length space:space];
+}
 
 
 @end
+
 
