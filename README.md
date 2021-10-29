@@ -22,8 +22,7 @@ $ cordova platform add ios
 $ cordova plugin add <path to QuantumSDK-Cordova on local machine>
 ```
 
-5. Copy build.json from plugin's root to new app's root folder
-6. Make sure you have your iOS plugged into the computer and build your app.
+5. Make sure you have your iOS plugged into the computer and build your app.
 ```
 $ cordova build
 ```
