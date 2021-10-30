@@ -5,109 +5,109 @@ var exec = require('cordova/exec');
         /**
          All device types, used when setting active device
          */
-        DEVICE_TYPE_ALL: -1,
+    DEVICE_TYPE_ALL: -1,
         /**
          Linea Pro 1,2,3,4,4s, LineaTab
          */
-        DEVICE_TYPE_LINEA: 0,
+    DEVICE_TYPE_LINEA: 0,
         /**
          Any of the supported printers - PP-60, DPP-250, DPP-350, DPP-450
          */
-        DEVICE_TYPE_PRINTER: 1,
+    DEVICE_TYPE_PRINTER: 1,
         /**
          Any of the supported pinpads - MPED-400, PPAD1, BP50, BP500
          */
-        DEVICE_TYPE_PINPAD: 2,
+    DEVICE_TYPE_PINPAD: 2,
         /**
          Transport device for connecting to other devices via bluetooth
          */
-        DEVICE_TYPE_ISERIAL: 3,
+    DEVICE_TYPE_ISERIAL: 3,
         /**
          Any of the supported zebra printers - DPP-450
          */
-        DEVICE_TYPE_PRINTER_ZPL: 4,
+    DEVICE_TYPE_PRINTER_ZPL: 4,
         /**
          Any of the supported iHUB devices
          */
-        DEVICE_TYPE_IHUB: 5,
+    DEVICE_TYPE_IHUB: 5,
         /**
          Any of the supported HID barcode devices
          */
-        DEVICE_TYPE_HID_BARCODE: 6,
+    DEVICE_TYPE_HID_BARCODE: 6,
         /**
          Any of the supported USB magnetic stripe reader devices
          */
-        DEVICE_TYPE_USB_MSR: 7,
+    DEVICE_TYPE_USB_MSR: 7,
         /**
          HID keyboard devices
          */
-        DEVICE_TYPE_HID_KEYBOARD: 8,
+    DEVICE_TYPE_HID_KEYBOARD: 8,
     };
     
     exports.CONN_STATES = {
         /**
          Device is disconnected, no automatic connection attempts will be made
          */
-        CONN_DISCONNECTED: 0,
+    CONN_DISCONNECTED: 0,
         /**
          The SDK is trying to connect to the device
          */
-        CONN_CONNECTING: 1,
+    CONN_CONNECTING: 1,
         /**
          Device is connected
          */
-        CONN_CONNECTED: 2
+    CONN_CONNECTED: 2
     };
     
     exports.BATTERY_CHIPS = {
-        BATTERY_CHIP_NONE: 0,
-        BATTERY_CHIP_BQ27421: 1,
+    BATTERY_CHIP_NONE: 0,
+    BATTERY_CHIP_BQ27421: 1,
     };
     
     exports.SCAN_MODES = {
         /**
          The scan will be terminated after successful barcode recognition (default)
          */
-        MODE_SINGLE_SCAN: 0,
+    MODE_SINGLE_SCAN: 0,
         /**
          Scanning will continue unless either scan button is releasd, or stop scan function is called
          */
-        MODE_MULTI_SCAN: 1,
+    MODE_MULTI_SCAN: 1,
         /**
          For as long as scan button is pressed or stop scan is not called the engine will operate in low power scan mode trying to detect objects entering the area, then will turn on the lights and try to read the barcode. Supported only on Code engine.
          */
-        MODE_MOTION_DETECT: 2,
+    MODE_MOTION_DETECT: 2,
         /**
          Pressing the button/start scan will enter aim mode, while a barcode scan will actually be performed upon button release/stop scan.
          */
-        MODE_SINGLE_SCAN_RELEASE: 3,
+    MODE_SINGLE_SCAN_RELEASE: 3,
         /**
          Same as multi scan mode, but allowing no duplicate barcodes to be scanned
          */
-        MODE_MULTI_SCAN_NO_DUPLICATES: 4,
+    MODE_MULTI_SCAN_NO_DUPLICATES: 4,
     };
     
     exports.UPDATE_PHASE = {
         /**
          Initializing update
          */
-        UPDATE_INIT: 0,
+    UPDATE_INIT: 0,
         /**
          Erasing old firmware/preparing memory
          */
-        UPDATE_ERASE: 1,
+    UPDATE_ERASE: 1,
         /**
          Writing data
          */
-        UPDATE_WRITE: 2,
+    UPDATE_WRITE: 2,
         /**
          Update complete, this is the final phase
          */
-        UPDATE_FINISH: 3,
+    UPDATE_FINISH: 3,
         /**
          Post-update operations
          */
-        UPDATE_COMPLETING: 4
+    UPDATE_COMPLETING: 4
     };
     
     /**
@@ -127,6 +127,66 @@ var exec = require('cordova/exec');
         ALG_PPAD_AES256_CBC: 19
     };
     
+    exports.KEY_ENCRYPTION = {
+        /**
+         Authentication key
+         */
+        KEY_AUTHENTICATION: 0x00,
+
+        /**
+         Encrypted head key loading(encryption) key (KEK), used to load other keys with
+         */
+        KEY_EH_AES256_LOADING: 0x02,
+
+        /**
+         Encrypted head AES256 Data encryption key 1
+         */
+        KEY_EH_AES256_ENCRYPTION1: 0x01,
+        /**
+         Encrypted head AES256 Data encryption key 2 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_AES256_ENCRYPTION2: 0x03,
+        /**
+         Encrypted head AES256 Data encryption key 3 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_AES256_ENCRYPTION3: 0x04,
+
+        /**
+         Encrypted head AES128 Data encryption key 1 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_AES128_ENCRYPTION1: 0x09,
+        /**
+         Encrypted head AES128 Data encryption key 2 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_AES128_ENCRYPTION2: 0x0B,
+        /**
+         Encrypted head AES128 Data encryption key 3 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_AES128_ENCRYPTION3: 0x0C,
+
+        /**
+         Encrypted head TMK key
+         */
+        KEY_EH_TMK_AES: 0x10,
+
+        /**
+         Encrypted head 3DES DUKPT data encryption key 1
+         */
+        KEY_EH_DUKPT_MASTER1: 0x20,
+        /**
+         Encrypted head 3DES DUKPT data encryption key 2 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_DUKPT_MASTER2: 0x21,
+        /**
+         Encrypted head 3DES DUKPT data encryption key 3 (present on EMSR firmware version 2.30 and above)
+         */
+        KEY_EH_DUKPT_MASTER3: 0x22,
+
+        /**
+         This flag locks barcode, magnetic card and bluetooth usage, so it will be possible to use them only after authenticating
+         */
+        KEY_AUTH_FLAG_LOCK: 1
+    };
     
     // ******* SDK Delegates ********
     // These functions will be called when the scanner receives these events
@@ -537,11 +597,21 @@ var exec = require('cordova/exec');
      @param {BOOL} enabled turns on or off beeping
      @param {int array} data an array of integer values specifying pairs of tone(Hz) and duration(ms).
      */
-    
-    exports.barcodeSetScanBeep = function(enabled, beepData, success, error){
+    exports.barcodeSetScanBeep = function(enabled, beepData, success, error) {
         exec(success, error, 'QuantumSDKCordova', 'barcodeSetScanBeep', [enabled, beepData]);
     };
     
+    /**
+     Plays a sound using the built-in speaker on the active device
+     @note A sample beep containing of 2 tones, each with 400ms duration, first one 2000Hz and second - 5000Hz will look int beepData[]={2000,400,5000,400}
+     @param {int array} beepData an array of integer values specifying pairs of tone(Hz) and duration(ms).
+     @param {function} success beep successfully enabled/disabled and/or tone changed
+     @param {function} error pointer to NSError object, where error information is stored in case function fails. You can pass nil if you don't want that information
+     */
+    exports.playSound = function(beepData, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'playSound',[beepData]);
+    };
+    
     exports.iHUBGetPortsInfo = function(success, error){
-        exec(success, error, 'QuantumSDKCordova', 'iHUBGetPortsInfo');
+        exec(success, error, 'QuantumSDKCordova', 'iHUBGetPortsInfo', []);
     };

@@ -42,8 +42,8 @@
 - (void)emsrIsTampered:(CDVInvokedUrlCommand*)command;
 - (void)emsrGetKeyVersion:(CDVInvokedUrlCommand*)command;
 - (void)emsrGetDeviceInfo:(CDVInvokedUrlCommand*)command;
-- (void)iHUBGetPortsInfo: (CDVInvokedUrlCommand *) command;
-
+- (void)iHUBGetPortsInfo:(CDVInvokedUrlCommand *) command;
+- (void)playSound:(CDVInvokedUrlCommand *) command;
 
 @end
 
@@ -127,14 +127,44 @@
     [self.ipc disconnect];
 }
 
--(void)sdkVersion: (CDVInvokedUrlCommand *)command{
+-(void)sdkVersion: (CDVInvokedUrlCommand *)command
+{
     NSLog(@"Call SDK Version");
     CDVPluginResult *pluginResult = nil;
     int sdk = [self.ipc sdkVersion];
-    if(sdk){
+    if (sdk) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:sdk];
         NSLog(@"SDK Version: %d", sdk);
     }
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)playSound:(CDVInvokedUrlCommand *)command
+{
+    NSLog(@"Call playSound");
+    CDVPluginResult* pluginResult = nil;
+    
+    NSArray *beeps = command.arguments[0];
+    BOOL isSuccess = NO;
+    NSError *error = nil;
+    
+    if (beeps.count > 0) {
+        int numberOfData = (int)beeps.count;
+        int beepData[numberOfData];
+        for (int x = 0; x < numberOfData; x++) {
+            beepData[x] = [beeps[x] intValue];
+        }
+                
+        isSuccess = [self.ipc playSound:100 beepData:beepData length:(int)sizeof(beepData) error:&error];
+    }
+    
+    if (!error || isSuccess) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+    }
+    
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -459,23 +489,22 @@
 }
 
 
-- (void)barcodeSetScanBeep: (CDVInvokedUrlCommand *)command{
+- (void)barcodeSetScanBeep: (CDVInvokedUrlCommand *)command
+{
     NSLog(@"Call barocdeSetScanBeep");
     
     CDVPluginResult *pluginResult = nil;
     BOOL enabled = [command.arguments[0] boolValue];
     NSError *beepError = nil;
-    int volume = 100;
     NSArray *beeps = command.arguments[1];
 
     int numberOfData = (int)beeps.count;
-
     int beepData[numberOfData];
     for (int x = 0; x < numberOfData; x++) {
         beepData[x] = [beeps[x] intValue];
     }
 
-    BOOL isSuccess =[self.ipc barcodeSetScanBeep:enabled volume:volume beepData:beepData length:(int)sizeof(beepData) error:&beepError];
+    BOOL isSuccess =[self.ipc barcodeSetScanBeep:enabled volume:100 beepData:beepData length:(int)sizeof(beepData) error:&beepError];
     if(isSuccess){
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:enabled];
     }
@@ -977,5 +1006,4 @@
 
 
 @end
-
 
