@@ -60,7 +60,7 @@ Quantum.barcodeData = function (barcode, type) {
 }.bind(this);
 ```
 
-*Note: Some functions should only be called when the device is connected. Your app should wait until `connectionState` returns `CONN_CONNECTED` state before executing those functions.*
+*Note: Some functions should only be called when the device is connected. Your app should wait until `connectionState` returns `CONN_STATES.CONN_CONNECTED` state before executing those functions.*
 
 
 ## Troubleshoot:
