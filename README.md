@@ -57,3 +57,6 @@ xcodebuild: Command failed with exit code 65
   1. Open Xcode, and set your Team and Profile in Signing & Capabilities.
   2. Use a build.json config to sign every time you run `cordova build` command. Visit [Cordova](https://cordova.apache.org/docs/en/10.x/guide/platforms/ios/#using-buildjson) for more info.
   3. Use build flags. Visit [Cordova](https://cordova.apache.org/docs/en/10.x/guide/platforms/ios/#using-flags) for more info.
+
+## API Docs:
+[Click here](https://infiniteperipherals.github.io/QuantumSDK-Cordova/) to view QuantumSDK-Cordova's API Docs.
