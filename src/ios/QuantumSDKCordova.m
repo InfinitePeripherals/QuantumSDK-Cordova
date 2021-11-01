@@ -102,12 +102,15 @@
     [self.iq setDeveloperKey:key withError:&error];
     if (error) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        
         NSLog(@"Developer Key Error: %@", error.localizedDescription);
+    }
+    else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     }
 
     self.ipc = [IPCDTDevices sharedDevice];
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)connect:(CDVInvokedUrlCommand *)command
@@ -132,9 +135,12 @@
     NSLog(@"Call SDK Version");
     CDVPluginResult *pluginResult = nil;
     int sdk = [self.ipc sdkVersion];
-    if (sdk) {
+    if (sdk > 0) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:sdk];
         NSLog(@"SDK Version: %d", sdk);
+    }
+    else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -504,7 +510,14 @@
         beepData[x] = [beeps[x] intValue];
     }
 
-    BOOL isSuccess =[self.ipc barcodeSetScanBeep:enabled volume:100 beepData:beepData length:(int)sizeof(beepData) error:&beepError];
+    BOOL isSuccess = YES;
+    if (enabled) {
+        isSuccess = [self.ipc barcodeSetScanBeep:enabled volume:100 beepData:beepData length:(int)sizeof(beepData) error:&beepError];
+    }
+    else {
+        isSuccess = [self.ipc barcodeSetScanBeep:enabled volume:0 beepData:nil length:0 error:&beepError];
+    }
+    
     if(isSuccess){
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:enabled];
     }
@@ -1006,4 +1019,5 @@
 
 
 @end
+
 

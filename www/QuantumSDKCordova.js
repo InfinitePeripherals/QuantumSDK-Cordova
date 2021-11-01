@@ -329,8 +329,8 @@ var exec = require('cordova/exec');
      * This must be the first function that gets called, and a valid develop key must be passed in, and validated, BEFORE any other functions get executed.
      * @param {string} key The developer key given by IPC
      */
-    exports.setDeveloperKey = function (key, error) {
-        exec(null, error, 'QuantumSDKCordova', 'setDeveloperKey', [key]);
+    exports.setDeveloperKey = function (key, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'setDeveloperKey', [key]);
     };
     
     /**
@@ -350,8 +350,8 @@ var exec = require('cordova/exec');
     /**
      SDK version
      */
-    exports.sdkVersion = function (){
-        exec(null, null, 'QuantumSDKCordova', 'sdkVersion', []);
+    exports.sdkVersion = function (success, error){
+        exec(success, null, 'QuantumSDKCordova', 'sdkVersion', []);
     }
     /**
      * Get information of a specific firmware file. Info will be passed to success function
@@ -368,8 +368,8 @@ var exec = require('cordova/exec');
      * @param {string} resourcePath The path to resource file with "platforms/ios/www/resources" as the root folder, your files must be copied to here. If you have "platforms/ios/www/resources/test.txt", only pass "test.txt" as resourcePath parameter.
      * @param {function} error The error reason will be passed in if available
      */
-    exports.updateFirmwareData = function (resourcePath, error) {
-        exec(null, error, 'QuantumSDKCordova', 'updateFirmwareData', [resourcePath]);
+    exports.updateFirmwareData = function (resourcePath, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'updateFirmwareData', [resourcePath]);
     };
     
     /**
@@ -396,8 +396,8 @@ var exec = require('cordova/exec');
      * @param {bool} value true or false
      * @param {function} error The error reason will be passed in if available
      */
-    exports.setCharging = function (value, error) {
-        exec(null, error, 'QuantumSDKCordova', 'setCharging', [value]);
+    exports.setCharging = function (value, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'setCharging', [value]);
     };
     
     /**
@@ -405,8 +405,8 @@ var exec = require('cordova/exec');
      * @param {bool} value true or false
      * @param {function} error The error reason will be passed in if available
      */
-    exports.setPassThroughSync = function (value, error) {
-        exec(null, error, 'QuantumSDKCordova', 'setPassThroughSync', [value]);
+    exports.setPassThroughSync = function (value, succes, error) {
+        exec(success, error, 'QuantumSDKCordova', 'setPassThroughSync', [value]);
     };
     
     /**
@@ -423,8 +423,8 @@ var exec = require('cordova/exec');
      * @param {int} value Must be one of 500, 1000, 2100, 2400
      * @param {function} error The error reason will be passed in if available
      */
-    exports.setUSBChargeCurrent = function (value, error) {
-        exec(null, error, 'QuantumSDKCordova', 'setUSBChargeCurrent', [value]);
+    exports.setUSBChargeCurrent = function (value, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'setUSBChargeCurrent', [value]);
     };
     
     /**
@@ -451,24 +451,24 @@ var exec = require('cordova/exec');
      * @param {int} timeDisconnected this is the time with no active program connection, after which Linea will turn off. The default value is 30 seconds
      * @param {function} error The error reason will be passed in if available
      */
-    exports.setAutoOffWhenIdle = function (timeIdle, timeDisconnected, error) {
-        exec(null, error, 'QuantumSDKCordova', 'setAutoOffWhenIdle', [timeIdle, timeDisconnected]);
+    exports.setAutoOffWhenIdle = function (timeIdle, timeDisconnected, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'setAutoOffWhenIdle', [timeIdle, timeDisconnected]);
     };
     
     /**
      * Power on the RF module. Continuously leaving the RF module powered on will drain battery.
      * @param {function} error The error reason will be passed in if available
      */
-    exports.rfInit = function (error) {
-        exec(null, error, 'QuantumSDKCordova', 'rfInit', []);
+    exports.rfInit = function (success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'rfInit', []);
     };
     
     /**
      * Power down the RF module, when not in use.
      * @param {function} error The error reason will be passed in if available
      */
-    exports.rfClose = function (error) {
-        exec(null, error, 'QuantumSDKCordova', 'rfClose', []);
+    exports.rfClose = function (success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'rfClose', []);
     };
     
     /**
@@ -485,8 +485,8 @@ var exec = require('cordova/exec');
      * @param {bool} scanButtonMode true or false
      * @param {function} error The error reason will be passed in if available
      */
-    exports.barcodeSetScanButtonMode = function (scanButtonMode, error) {
-        exec(null, error, 'QuantumSDKCordova', 'barcodeSetScanButtonMode', [scanButtonMode]);
+    exports.barcodeSetScanButtonMode = function (scanButtonMode, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'barcodeSetScanButtonMode', [scanButtonMode]);
     };
     
     /**
@@ -503,8 +503,8 @@ var exec = require('cordova/exec');
      * @param {int} scanMode One of SCAN_MODES
      * @param {function} error The error reason will be passed in if available
      */
-    exports.barcodeSetScanMode = function (scanMode, error) {
-        exec(null, error, 'QuantumSDKCordova', 'barcodeSetScanMode', [scanMode]);
+    exports.barcodeSetScanMode = function (scanMode, success, error) {
+        exec(success, error, 'QuantumSDKCordova', 'barcodeSetScanMode', [scanMode]);
     };
     
     /**
