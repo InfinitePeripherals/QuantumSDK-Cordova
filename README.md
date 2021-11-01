@@ -46,21 +46,21 @@ Quantum.connect();
 ```
 <br>
 
-* Device connection state callback:
+* Listen for device connection state:
 ```
 Quantum.connectionState = function (state) {
     alert("State: " + state);
 }.bind(this);
 ```
 
-* Get a barcode from callback:
+* Listen for a barcode after scanning:
 ```
 Quantum.barcodeData = function (barcode, type) {
     alert("Barcode: " + barcode + "\n" + "Type: " + type);
 }.bind(this);
 ```
 
-*Some functions should only be called when the device is connected. Your app should wait until `connectionState` returns `CONN_CONNECTED` state.*
+*Note: Some functions should only be called when the device is connected. Your app should wait until `connectionState` returns `CONN_CONNECTED` state before executing those functions.*
 
 
 ## Troubleshoot:
