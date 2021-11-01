@@ -3,7 +3,7 @@
 ## Requirements:
 * Download QuantumSDK.xcframework from Infinite Peripherals's developer portal https://developer.ipcmobile.com
 
-## New Cordova app:
+## Add QuantumSDK-Cordova plugin to your app:
 1. Copy or replace latest QuantumSDK.xcframework to QuantumSDK-Cordova/src/ios/ of the downloaded plugin
 
 2. Create new app from command line: <br>
