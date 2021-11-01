@@ -1,4 +1,32 @@
-var exec = require('cordova/exec');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: QuantumSDKCordova.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: QuantumSDKCordova.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var exec = require('cordova/exec');
     
     /**
      Supported device types
@@ -323,7 +351,7 @@ var exec = require('cordova/exec');
     };
     
     /**
-     * Called when a card is read and the head is encrypted with PPAD & DUKPT separated key
+     * Called when a card is read and the head is encrypted with PPAD &amp; DUKPT separated key
      * @param {data} data contains the whole encrypted card data block
      * @param {string} track1 encrypted data extracted from data
      * @param {string} track2 encrypted data extracted from data
@@ -638,7 +666,7 @@ var exec = require('cordova/exec');
      * @param {function} success beep successfully enabled/disabled and/or tone changed
      * @param {function} error pointer to NSError object, where error information is stored in case function fails. You can pass nil if you don't want that information
      * @param {bool} enabled turns on or off beeping
-     * @param {array<int>} data an array of integer values specifying pairs of tone(Hz) and duration(ms).
+     * @param {array&lt;int>} data an array of integer values specifying pairs of tone(Hz) and duration(ms).
      */
     exports.barcodeSetScanBeep = function(enabled, beepData, success, error) {
         exec(success, error, 'QuantumSDKCordova', 'barcodeSetScanBeep', [enabled, beepData]);
@@ -646,7 +674,7 @@ var exec = require('cordova/exec');
     
     /**
      * Plays a sound using the built-in speaker on the active device. A sample beep containing of 2 tones, each with 400ms duration, first one 2000Hz and second - 5000Hz will look int beepData[]={2000,400,5000,400}
-     * @param {array<int>} beepData an array of integer values specifying pairs of tone(Hz) and duration(ms).
+     * @param {array&lt;int>} beepData an array of integer values specifying pairs of tone(Hz) and duration(ms).
      * @param {function} success The success function to call when this function is successfully executed
      * @param {function} error The error reason will be passed in if available
      */
@@ -656,4 +684,26 @@ var exec = require('cordova/exec');
     
     exports.iHUBGetPortsInfo = function(success, error){
         exec(success, error, 'QuantumSDKCordova', 'iHUBGetPortsInfo', []);
-    };
+    };</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#barcodeData">barcodeData</a></li><li><a href="global.html#barcodeDecimals">barcodeDecimals</a></li><li><a href="global.html#barcodeGetScanButtonMode">barcodeGetScanButtonMode</a></li><li><a href="global.html#barcodeGetScanMode">barcodeGetScanMode</a></li><li><a href="global.html#barcodeNSData">barcodeNSData</a></li><li><a href="global.html#barcodeSetScanBeep">barcodeSetScanBeep</a></li><li><a href="global.html#barcodeSetScanButtonMode">barcodeSetScanButtonMode</a></li><li><a href="global.html#barcodeSetScanMode">barcodeSetScanMode</a></li><li><a href="global.html#barcodeStartScan">barcodeStartScan</a></li><li><a href="global.html#barcodeStopScan">barcodeStopScan</a></li><li><a href="global.html#BATTERY_CHIPS">BATTERY_CHIPS</a></li><li><a href="global.html#CONN_STATES">CONN_STATES</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#connectionState">connectionState</a></li><li><a href="global.html#deviceButtonPressed">deviceButtonPressed</a></li><li><a href="global.html#deviceButtonReleased">deviceButtonReleased</a></li><li><a href="global.html#disconnect">disconnect</a></li><li><a href="global.html#emsrConfigMaskedDataShowExpiration">emsrConfigMaskedDataShowExpiration</a></li><li><a href="global.html#emsrGetKeyVersion">emsrGetKeyVersion</a></li><li><a href="global.html#emsrIsTampered">emsrIsTampered</a></li><li><a href="global.html#emsrSetActiveHead">emsrSetActiveHead</a></li><li><a href="global.html#emsrSetEncryption">emsrSetEncryption</a></li><li><a href="global.html#ENCRYPTION_TYPE">ENCRYPTION_TYPE</a></li><li><a href="global.html#firmwareUpdateProgress">firmwareUpdateProgress</a></li><li><a href="global.html#getBatteryInfo">getBatteryInfo</a></li><li><a href="global.html#getConnectedDeviceInfo">getConnectedDeviceInfo</a></li><li><a href="global.html#getConnectedDevicesInfo">getConnectedDevicesInfo</a></li><li><a href="global.html#getFirmwareFileInformation">getFirmwareFileInformation</a></li><li><a href="global.html#getPassThroughSync">getPassThroughSync</a></li><li><a href="global.html#getUSBChargeCurrent">getUSBChargeCurrent</a></li><li><a href="global.html#KEY_ENCRYPTION">KEY_ENCRYPTION</a></li><li><a href="global.html#magneticCardData">magneticCardData</a></li><li><a href="global.html#magneticCardEncryptedData">magneticCardEncryptedData</a></li><li><a href="global.html#magneticCardIDTECH">magneticCardIDTECH</a></li><li><a href="global.html#magneticCardPPADDUKPTSeparate">magneticCardPPADDUKPTSeparate</a></li><li><a href="global.html#magneticCardReadFailed">magneticCardReadFailed</a></li><li><a href="global.html#playSound">playSound</a></li><li><a href="global.html#rfCardDetected">rfCardDetected</a></li><li><a href="global.html#rfClose">rfClose</a></li><li><a href="global.html#rfInit">rfInit</a></li><li><a href="global.html#SCAN_MODES">SCAN_MODES</a></li><li><a href="global.html#sdkVersion">sdkVersion</a></li><li><a href="global.html#setAutoOffWhenIdle">setAutoOffWhenIdle</a></li><li><a href="global.html#setCharging">setCharging</a></li><li><a href="global.html#setDeveloperKey">setDeveloperKey</a></li><li><a href="global.html#setPassThroughSync">setPassThroughSync</a></li><li><a href="global.html#setUSBChargeCurrent">setUSBChargeCurrent</a></li><li><a href="global.html#SUPPORTED_DEVICE_TYPES">SUPPORTED_DEVICE_TYPES</a></li><li><a href="global.html#UPDATE_PHASE">UPDATE_PHASE</a></li><li><a href="global.html#updateFirmwareData">updateFirmwareData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Nov 01 2021 12:05:06 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
