@@ -33,6 +33,36 @@ $ cordova build
 3. Take a look at QuantumSDKCordova.js for available functions.
 4. Make sure to add `Quantum.` in front of any functions you call from QuantumSDKCordova.js 
 
+Some examples:
+* Set a developer key for your app before running:
+```
+Quantum.setDeveloperKey("your_developer_key");
+```
+<br>
+
+* Connect the scanner (please make sure the device is powered on):
+```
+Quantum.connect();
+```
+<br>
+
+* Device connection state callback:
+```
+Quantum.connectionState = function (state) {
+    alert("State: " + state);
+}.bind(this);
+```
+
+* Get a barcode from callback:
+```
+Quantum.barcodeData = function (barcode, type) {
+    alert("Barcode: " + barcode + "\n" + "Type: " + type);
+}.bind(this);
+```
+
+*Some functions should only be called when the device is connected. Your app should wait until `connectionState` returns `CONN_CONNECTED` state.*
+
+
 ## Troubleshoot:
 * If you get this error:
 ```
