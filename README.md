@@ -36,7 +36,7 @@ $ cordova build
 Some examples:
 * Set a developer key for your app before running:
 ```
-Quantum.setDeveloperKey("your_developer_key");
+Quantum.setDeveloperKey("your_developer_key", successFunction, errorFunction);
 ```
 <br>
 
