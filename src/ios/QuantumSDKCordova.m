@@ -1,4 +1,4 @@
-/********* QuantumSDKCordova.m Cordova Plugin Implementation 1.0.13 *******/
+/********* QuantumSDKCordova.m Cordova Plugin Implementation 1.0.14 *******/
 
 #import <WebKit/WebKit.h>
 #import <Cordova/CDV.h>
@@ -42,6 +42,7 @@
 - (void)emsrIsTampered:(CDVInvokedUrlCommand*)command;
 - (void)emsrGetKeyVersion:(CDVInvokedUrlCommand*)command;
 - (void)emsrGetDeviceInfo:(CDVInvokedUrlCommand*)command;
+- (void)emsrGetKeysInfo:(CDVInvokedUrlCommand*)command;
 - (void)iHUBGetPortsInfo:(CDVInvokedUrlCommand *) command;
 - (void)playSound:(CDVInvokedUrlCommand *) command;
 
@@ -767,6 +768,46 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)emsrGetKeysInfo:(CDVInvokedUrlCommand *)command
+{
+    NSLog(@"Call emsrGetKeysInfo");
+    
+    CDVPluginResult* pluginResult = nil;
+    NSError *error = nil;
+    EMSRKeysInfo *keysInfo = [self.ipc emsrGetKeysInfo:&error];
+    
+    if (keysInfo) {
+        // Get all EMSRKeys
+        NSMutableArray *emsrKeys = [NSMutableArray new];
+        for (EMSRKey *key in keysInfo.keys) {
+            NSString *dukptHexString = [self hexStringFromData:key.dukptKSN length:(int)key.dukptKSN.length space:NO];
+            NSDictionary *keyObject = @{
+                @"keyID" : @(key.keyID),
+                @"keyVersion" : @(key.keyVersion),
+                @"dukptKSN" : dukptHexString ? dukptHexString : @"",
+                @"keyName" : key.keyName
+            };
+            
+            if (keyObject) {
+                [emsrKeys addObject:keyObject];
+            }
+        }
+        
+        // Create the EMSRKeysInfo object
+        NSDictionary *keysInfoObject = @{
+            @"keys" : emsrKeys,
+            @"tampered" : @(keysInfo.tampered)
+        };
+        
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:keysInfoObject];
+    }
+    else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+    }
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (NSURL *)resourcePath
 {
     NSURL *pathURL = [[NSBundle mainBundle] resourceURL];
@@ -1019,5 +1060,4 @@
 
 
 @end
-
 
