@@ -330,10 +330,11 @@ exports.firmwareUpdateProgress = function (phase, percent) {
  * @param {string} track3 encrypted data extracted from data
  * @param {string} pan encrypted data extracted from data
  * @param {string} trackJIS encrypted data extracted from data
- * @param {int} source Source
+ * @param {int} source the track data source
+ * @param {string} ksn data
  */
-exports.magneticCardPPADDUKPTSeparate = function (data, track1, track2, track3, pan, trackJIS, source) {
-    
+ exports.magneticCardPPADDUKPTSeparate = function (data, track1, track2, track3, pan, trackJIS, source, ksn) {
+        
 };
 
 /**
@@ -344,8 +345,9 @@ exports.magneticCardPPADDUKPTSeparate = function (data, track1, track2, track3, 
  * @param {string} track3masked unencrypted track3 masked
  * @param {string} encryptedData encrypted data extracted from data
  * @param {int} encryption the encryption type of the encrypted data
+ * @param {string} ksn data
  */
-exports.magneticCardIDTECH = function (data, track1masked, track2masked, track3masked, encryptedData, encryption) {
+exports.magneticCardIDTECH = function (data, track1masked, track2masked, track3masked, encryptedData, encryption, ksn) {
     
 };
 

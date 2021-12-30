@@ -923,6 +923,7 @@
     //2 more bytes - length (10)
     int ksnLen=(bytes[index+0]<<8)|(bytes[index+1]);
     index+=2;
+    NSData *ksnData = [NSData dataWithBytes:&bytes[index] length:ksnLen];
     index+=ksnLen;
     //blocks of data follow for the tracks read
     NSData *t1Encrypted=nil;
@@ -958,6 +959,7 @@
     }
     
     NSString *dataHexString = [self hexStringFromData:data length:(int)data.length space:NO];
+    NSString *ksnHexString = [self hexStringFromData:ksnData length:(int)ksnData.length space:NO];
     NSString *t1EncryptedHexString = [self hexStringFromData:t1Encrypted length:(int)t1Encrypted.length space:NO];
     NSString *t2EncryptedHexString = [self hexStringFromData:t2Encrypted length:(int)t2Encrypted.length space:NO];
     NSString *t3EncryptedHexString = [self hexStringFromData:t3Encrypted length:(int)t3Encrypted.length space:NO];
@@ -965,7 +967,7 @@
     NSString *tJISEncryptedHexString = [self hexStringFromData:tJISEncrypted length:(int)tJISEncrypted.length space:NO];
     
     // Callback with all tracks
-    [self callback:@"Quantum.magneticCardPPADDUKPTSeparate(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", %i)", dataHexString, t1EncryptedHexString, t2EncryptedHexString, t3EncryptedHexString, panEncryptedHexString, tJISEncryptedHexString, source];
+    [self callback:@"Quantum.magneticCardPPADDUKPTSeparate(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",%i,\"%@\")", dataHexString, t1EncryptedHexString, t2EncryptedHexString, t3EncryptedHexString, panEncryptedHexString, tJISEncryptedHexString, source, ksnHexString];
 
     return true;
 }
@@ -989,11 +991,17 @@
     index+=t3Len; //track 3 masked
     const uint8_t *encrypted=&bytes[index]; //encrypted
     size_t encLen=[data length]-index-10-40;
+    // KSN
+    index += encLen;
+    index += 20; //track1 sha1
+    index += 20; //track2 sha1
+    NSData *ksnData = [NSData dataWithBytes:&bytes[index] length:10]; //dukpt serial number
     
+    NSString *ksnHexString = [self hexStringFromData:ksnData length:(int)ksnData.length space:NO];
     NSString *dataHexString = [self hexStringFromData:data length:(int)data.length space:NO];
     NSString *encryptedHexString = [self hexStringFromBytes:encrypted length:(int)encLen space:NO];
     
-    [self callback:@"Quantum.magneticCardIDTECH(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", %i)", dataHexString, t1masked, t2masked, t3masked, encryptedHexString, encryption];
+    [self callback:@"Quantum.magneticCardIDTECH(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",%i,\"%@\")", dataHexString, t1masked, t2masked, t3masked, encryptedHexString, encryption, ksnHexString];
 }
 
 - (void)magneticCardReadFailed:(int)source reason:(int)reason

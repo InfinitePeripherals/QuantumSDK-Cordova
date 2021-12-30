@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-quantumsdk",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "QuantumSDK Cordova plugin",
   "cordova": {
     "id": "cordova-plugin-quantumsdk",

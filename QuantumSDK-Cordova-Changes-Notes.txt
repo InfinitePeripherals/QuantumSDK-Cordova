@@ -1,0 +1,4 @@
+QuantumSDK-Cordova-Changes-Notes
+
+1.0.3
+- Added ksn data to 'magneticCardPPADDUKPTSeparate' and 'magneticCardIDTECH'
