@@ -1,4 +1,4 @@
-/********* QuantumSDKCordova.m Cordova Plugin Implementation 1.0.15 *******/
+/********* QuantumSDKCordova.m Cordova Plugin Implementation 1.0.4 *******/
 
 #import <WebKit/WebKit.h>
 #import <Cordova/CDV.h>
