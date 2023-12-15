@@ -1,4 +1,4 @@
-/********* QuantumSDKCordova.m Cordova Plugin Implementation 1.0.14 *******/
+/********* QuantumSDKCordova.m Cordova Plugin Implementation 1.0.15 *******/
 
 #import <WebKit/WebKit.h>
 #import <Cordova/CDV.h>
@@ -773,6 +773,7 @@
     NSLog(@"Call emsrGetKeysInfo");
     
     CDVPluginResult* pluginResult = nil;
+    
     NSError *error = nil;
     EMSRKeysInfo *keysInfo = [self.ipc emsrGetKeysInfo:&error];
     
@@ -849,7 +850,9 @@
 {
     //*************
     // This send to regular barcodeData as string
-    [self callback:@"Quantum.barcodeData(\"%@\", %i)", barcode, type];
+    // Handle special escape sequences before sending to JS
+    NSString *escapedString = [self escapeJavaScriptString:barcode];
+    [self callback:@"Quantum.barcodeData(\"%@\", %i)", escapedString, type];
     
     //*************
     // Convert to decimal
@@ -1030,6 +1033,21 @@
 }
 
 /** Helpers **/
+
+- (NSString *)escapeJavaScriptString:(NSString *)input
+{
+    NSMutableString *escapedString = [NSMutableString stringWithString:input];
+    [escapedString replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\'" withString:@"\\'" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\n" withString:@"\\n" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\r" withString:@"\\r" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\f" withString:@"\\f" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\t" withString:@"\\t" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\u2028" withString:@"\\u2028" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    [escapedString replaceOccurrencesOfString:@"\u2029" withString:@"\\u2029" options:NSLiteralSearch range:NSMakeRange(0, [escapedString length])];
+    return escapedString;
+}
 
 - (NSString *)hexStringFromBytes:(const uint8_t *)bytes length:(size_t)length space:(BOOL)space
 {
